@@ -1,8 +1,8 @@
 #Lab Exam 1
 game_library = {
-    "Donkey Kong":{"Copies": 3, "Cost": 2},
-    "Donkey Kong":{"Copies": 3, "Cost": 2},
-    "Donkey Kong":{"Copies": 3, "Cost": 2} 
+    "Donkey Kong":{"copies": 3, "cost": 2},
+    "Donkey Kong":{"copies": 3, "cost": 2},
+    "Donkey Kong":{"copies": 3, "cost": 2} 
 }
 
 user_account = {}
@@ -67,12 +67,19 @@ def sign_in()
     print("\nSign-in")
     while True:
         try:
-            username = input("Please enter your username(Leave Blank to Return): ")
-            if not username:
-                return
-            if username in user_account:
-                password = input("Enter your password(Leave Blank to Return): ")
-                #to be continued
+            username = input("Please enter your username: ")
+            password = input("Enter your password: ")
+            if username in user_account and user_account[username]["password"] == [password]
+                print("Log in successful")
+                user_menu()
+            else:
+                print('Invalid Output')
+                continue
+            break
+        except ValueError as e:
+            print(e)
+            sign_in()
+
 
 def user_menu(username)
     print("\nUser Menu")
@@ -122,7 +129,7 @@ def rent_game(username)
             if game_name in game_library and game_library[game_name]["quantity"] > 0:
                 if user_account[username]["balance"] >= game_library[game_name]["cost"]:
                     user_account[username]["balance"] -= game_library[game_name]["cost"]:
-                    game_library[game_name]["quantity"] -= 1
+                    game_library[game_name]["copies"] -= 1
                     user_account[username]["points"] += 1
                     if username not in user_inventory:
                         user_inventory[username] = game_name
@@ -131,7 +138,7 @@ def rent_game(username)
                         print(f"Game Successfully Rented. Remaining Balance {balance}. Current points {points}")
                 else:
                     print("Insufficient Balance")       
-            if  game_name in game_library and game_library[game_name]["quantity"] < 0:
+            if  game_name in game_library and game_library[game_name]["copies"] < 0:
                 print("Game is out of stock")
             else:
                 print("Invalid game name")
@@ -145,40 +152,30 @@ def rent_game(username)
             else:
                 print("Invalid Output")
         rent_game(username)   
+
 def return_game(username)
     print("\nReturn Game!")
     print(user_inventory[username])
     while True:
         try:
             game_name = str(input("Enter the name of the game you want to return"))
-            if game_name in user_inventory and game_library[game_name]["quantity"] > 0:
-                if user_account[username]["balance"] >= game_library[game_name]["cost"]:
-                    user_account[username]["balance"] -= game_library[game_name]["cost"]:
-                    game_library[game_name]["quantity"] -= 1
-                    user_account[username]["points"] += 1
-                    if username not in user_inventory:
-                        user_inventory[username] = game_name
-                    else:
-                        user_inventory[username].append(game_name)
-                        print(f"Game Successfully Rented. Remaining Balance {balance}. Current points {points}")
-                else:
-                    print("Insufficient Balance")       
-            if  game_name in game_library and game_library[game_name]["quantity"] < 0:
-                print("Game is out of stock")
-            else:
-                print("Invalid game name")
-        except ValueError as e
-        print(e)
-        choice = int(input("Rent another game (1) or Go back to menu (2)"))
+            if game_name in user_inventory.get(username, ):
+                user_inventory[username].remove(game_name)
+                game_library[game_name]['copies'] += 1
+                print(f"Game {game_name} successfully returned") 
+            else:  
+                print("Game not found in inventory")
+        except ValueError as e:
+            print(e)
+        choice = int(input("Return another game (1) or Go back to menu (2)"))
             if choice == 1:
-            rent_game(username)
+            return_game(username)
             if choice == 2:
             user_menu(username)
             else:
                 print("Invalid Output")
-        rent_game(username)  
+            return_game(username) 
 
-    
 def top_up(username)
     print("\nTop-up")
     print(f"Username {username}, Current Balance {balance}")
@@ -190,8 +187,76 @@ def top_up(username)
 def check_points(username)
     print(f"Current points{points}")
     check_points(username)
+
 def redeem_points()
     pass
+
 def check_inventory(username)
     print(f"Current inventory{check_inventory}")
     check_inventory(username)
+
+def admin_login()
+    while True:
+        username = input("Enter admin username: ")
+        password = input("Input admin password: ")
+        if username == admin_username and password == admin_pass:
+            print("Log in Successfully")
+            admin_menu()
+        else:
+            print("Invalid username or password")
+
+def admin_menu()
+    print('Welcome Admin')
+    print("1. Edit Library")
+    print("2. Exit")
+    choice = int(input("Enter Choice: "))
+    
+    while True:
+        if choice == 1:
+        edit_library()
+        if choice == 2:
+        main_menu()
+        else:
+            print("Invalid Output")
+            break
+
+def edit_library()
+    print("1. Edit price")
+    print("2. Edit quantity")
+    print("3. Add new game")
+    print("4. Log out")
+    choice = int(input("Enter your choice: "))
+
+    while True:
+        if choice == 1:
+            game_name = input("Enter the name of the game you want to edit the price: ")
+            if game_name in game_library:
+                new_cost = int(input("Enter the new price"))
+                game_library[game_name]["cost"] = new_cost
+                print('Price updated successfully')
+                edit_library()
+            else:
+                print("Game not found")
+        if choice == 2:
+            game_name = input("Enter the name of the game you want to edit the quantity: ")
+            if game_name in game_library:
+                new_quantity = int(input("Enter the new number of copies"))
+                game_library[game_name]["copies"] = new_quantity
+                print('Copies updated successfully')
+                edit_library()
+            else:
+                print("Game not found")
+        if choice == 3:
+            game_name = input("Enter the game you want to add: ")
+            copies = int(input("Enter the number of copies: "))
+            cost = int(input("Enter the cost of the game: "))
+            game_library[game_name] = {'copies': copies, "cost": cost}
+            print(f"Game {game_name} added successfully")
+        if choice == 4:
+            main_menu() 
+
+            
+def add_new_game
+
+
+    
